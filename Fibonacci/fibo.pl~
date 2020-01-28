@@ -1,0 +1,8 @@
+% fibo.pl
+
+main :-
+    write('Termino: '), read(N),
+    fibonacci(N, F),
+    write('El termino es: '), write(F), nl.
+
+fibonacci(0, 0) :- !.
