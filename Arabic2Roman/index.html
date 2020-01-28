@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Arabic to Roman</title>
+    <link rel="shortcut icon" href="logo.jpg">
+    <link rel="favicon" href="logo.jpg">
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
+
+    <link href="bulma.min.css" rel="stylesheet">
+    <script src="jquery.min.js"></script>
+
+    <style>
+        html {
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <section class="hero is-dark is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">
+                    Arabic to Roman utility
+                </h1>
+                <h2 class="subtitle">
+                    Simply transform from Arabic to Roman in realtime
+                </h2>
+                <div class="field has-addons">
+                    <div class="control">
+                        <input id="arabic-input" class="input" type="text" placeholder="Enter an arabic number...">
+                    </div>
+                    <div class="control">
+                        <a id="btn-transform" class="button is-info">
+                            Transform
+                        </a>
+                    </div>
+                </div>
+                <span id="roman-tag" class="tag is-light is-medium">Roman: </span>
+            </div>
+        </div>
+    </section>
+</body>
+<script>
+
+function convertToRoman(num) {
+    var roman = {
+        '~IV~': 4000,
+        M: 1000,
+        CM: 900,
+        D: 500,
+        CD: 400,
+        C: 100,
+        XC: 90,
+        L: 50,
+        XL: 40,
+        X: 10,
+        IX: 9,
+        V: 5,
+        IV: 4,
+        I: 1
+    };
+    var str = '';
+
+    for (var i of Object.keys(roman)) {
+        var q = Math.floor(num / roman[i]);
+        num -= q * roman[i];
+        str += i.repeat(q);
+    }
+
+    return str;
+}
+
+function arabic2roman() {
+    let arabic = $("#arabic-input").val();
+    if (arabic) {
+        let roman = convertToRoman(arabic);
+        $("#roman-tag").text('Roman: ' + roman);
+    }
+}
+
+$( document ).ready(function() {
+    $("#arabic-input").keyup(function () {
+        arabic2roman();
+    });
+    $("#btn-transform").click(function () {
+        arabic2roman();
+    });
+});
+
+</script>
+</html>
