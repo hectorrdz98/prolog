@@ -1,0 +1,40 @@
+% tmp.pl
+
+main :-
+    write('Seconds: '), read(S),
+    getDate(S), !.
+
+printIntFormatted(N, S) :-
+    S1 is (S - 1) * 10,
+    N >= S1, format('~d', N), !.
+printIntFormatted(N, S) :-
+    S1 is (S - 1) * 10,
+    N < S1, format('0~d', N).
+
+LYBefore(Year, Y) :-
+    Year > 0,
+    Year is Year - 1,
+    Y is round((Year / 4) - (Year / 100) + (Year / 400)),
+    !.
+LeapYearsBefore(_, Y) :-
+    Y is 0.
+
+leapYearsBetween(Start, End, X) :-
+    Start < End,
+    LeapYearsBefore(End, End1),
+    LeapYearsBefore(Start, Start1),
+    X is End1 - Start1, !.
+leapYearsBetween(_, _, X) :- X is 0.
+
+
+getDate(Secs) :-
+    Mins is floor(Secs / 60),
+    Hrs is floor(Mins / 60),
+    Days is floor(Hrs / 24),
+    Secs1 is Secs mod 60,
+    Mins1 is Mins mod 60,
+    Hrs1 is Hrs mod 24,
+    write(Days), write(' days '),
+    write(' '), printIntFormatted(Hrs1, 2),
+    write(':'), printIntFormatted(Mins1, 2),
+    write(':'), printIntFormatted(Secs1, 2).
