@@ -1,0 +1,26 @@
+% cal.pl
+
+main :-
+    printCal(2,2).
+
+printCal(_, actMonth) :-
+    write('Hola'),
+    getMonthName(actMonth, Month),
+    format('+~`-t~72|+ ~n', []),
+    format('|~t~w~t~72||~n', [Month]),
+    format('+~`-t~72|+ ~n', []).
+
+getMonthName(MonthNumber, Month) :- MonthNumber = 1, write('Hola'), !.
+getMonthName(MonthNumber, 'February') :- MonthNumber = 2,
+    write('Hola'), !.
+getMonthName(MonthNumber, Month) :- MonthNumber = 3, !.
+getMonthName(MonthNumber, Month) :- MonthNumber = 4, !.
+getMonthName(MonthNumber, Month) :- MonthNumber = 5, !.
+getMonthName(MonthNumber, Month) :- MonthNumber = 6, !.
+getMonthName(MonthNumber, Month) :- MonthNumber = 7, !.
+getMonthName(MonthNumber, Month) :- MonthNumber = 8, !.
+getMonthName(MonthNumber, Month) :- MonthNumber = 9, !.
+getMonthName(MonthNumber, Month) :- MonthNumber = 10, !.
+getMonthName(MonthNumber, Month) :- MonthNumber = 11, !.
+getMonthName(_, Month) :- !.
+
