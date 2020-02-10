@@ -3,7 +3,7 @@
 main :-
     printCal(2,1).
 
-printCal(Day2Start, 13) :- !.
+printCal(_, 13) :- !.
 printCal(Day2Start, ActMonth) :-
     printMonth(Day2Start, ActMonth), nl,
     ActMonth1 is ActMonth + 1,
@@ -26,36 +26,26 @@ printDaysNames() :-
 printDays(Act) :-
     (Act = 1 ; Act = 3 ; Act = 5 ; Act = 7 ; Act = 8 ;
     Act = 10 ; Act = 12),
-    printUntil(1, 31, 1, [], Numbers), 
-    print(Numbers), !.
+    printUntil(1, 31, 1), !.
 printDays(Act) :-
     not(Act = 2),
-    printUntil(1, 30, 1, [], Numbers), 
-    print(Numbers), !.
+    printUntil(1, 30, 1), !.
 printDays(_) :-
-    printUntil(1, 28, 1, [], Numbers), 
-    print(Numbers), !.
+    printUntil(1, 28, 1), !.
 
-printUntil(ActN, DestN, _, LList, NList) :-
-    ActN > DestN, NList is LList, print('fin'), !.
-printUntil(ActN, DestN, Cont, LList, NList) :-
-    number_string(ActN, ActStr),
-    append(LList, [ActStr], LList2),
+printUntil(ActN, DestN, _) :- ActN > DestN, !.
+printUntil(ActN, DestN, Cont) :-
     ActN1 is ActN + 1,
     Cont1 is Cont + 1,
     Cont1 =< 7,
     writeNumber(ActN),
-    printUntil(ActN1, DestN, Cont1, LList2, NList1), 
-    NList is NList1, !.
-printUntil(ActN, DestN, Cont, LList, NList) :-
-    number_string(ActN, ActStr),
-    append(LList, [ActStr], LList2),
+    printUntil(ActN1, DestN, Cont1), !.
+printUntil(ActN, DestN, _) :-
     ActN1 is ActN + 1,
     Cont1 is 1,
     writeNumber(ActN),
     write('|'), nl, write('|'), tab(1),
-    printUntil(ActN1, DestN, Cont1, LList2, NList1), 
-    NList is NList1, !.
+    printUntil(ActN1, DestN, Cont1), !.
 
 writeNumber(Number) :-
     Number < 10,
@@ -75,4 +65,3 @@ getMonthName(MonthNumber, 'September') :- MonthNumber = 9, !.
 getMonthName(MonthNumber, 'October') :- MonthNumber = 10, !.
 getMonthName(MonthNumber, 'November') :- MonthNumber = 11, !.
 getMonthName(_, 'December') :- !.
-
