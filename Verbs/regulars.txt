@@ -1,0 +1,3 @@
+correr,corro,corres,corre,corremos,corréis,corren,
+nadar,nado,nadas,nada,nadamos,nadáis,nadan,
+estudiar,estudio,estudias,estudia,estudiamos,estudiáis,estudian,

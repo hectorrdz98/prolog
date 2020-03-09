@@ -1,0 +1,13 @@
+
+verb :-
+    open('C:\\Users\\sasuk\\Documents\\ITQ\\6 semestre\\Programacion Logica y Funcional\\Prolog\\VerbsProlog\\regulars.txt', read, Str),
+    readVerbs(Str),
+    close(Str).
+
+readVerbs(Str) :-
+    at_end_of_stream(Str), !.
+
+readVerbs(Str) :-
+    read(Str, [Verb,I,You,He,We,They]),
+    write('Verb: '), write(Verb), nl,
+    readVerbs(Str).

@@ -1,0 +1,4 @@
+[correr,corro,corres,corre,corremos,corren].
+[nadar,nado,nadas,nada,nadamos,nadan].
+[estudiar,estudio,estudias,estudia,estudiamos,estudian].
+[vivir,vivo,vives,vive,vivimos,viven].
