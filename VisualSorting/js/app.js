@@ -106,7 +106,6 @@ function draw() {
                 for (var i = iShell; i < nodes.length; i++) {
                     var j = i;
                     var temp = nodes[i];
-                    console.log(i )
             
                     while (j >= iShell && nodes[j-iShell].y > temp.y) {
                         nodes[j] = nodes[j-iShell];
