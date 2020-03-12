@@ -32,6 +32,7 @@ $(".sortBtn").click(function () {
 
 $("#reset").click(function () {
     sorting = null
+    swapped = true
     nodes = originalNodes.slice()
     actComp = 0
     comparations.text("Comp: " + (actComp))
@@ -52,14 +53,13 @@ function setup() {
 var swapped = true;
 var iInsert = 1;
 var iShell = 0;
+var iShell2 = 0;
 
 let comparations = $("#compartions h3");
 var actComp = 0;
 
 function draw() {
     frameRate(10);
-    clear();
-    background(70, 66, 74);
     drawNodes();
     if (sorting) {
         if (sorting == 'bubble') {
@@ -103,31 +103,58 @@ function draw() {
             }
         } else if (sorting == 'shell') {
             if (iShell > 0) {
-                for (var i = iShell; i < nodes.length; i++) {
-                    var j = i;
-                    var temp = nodes[i];
+                if (iShell2 < nodes.length) {
+                    var j = iShell2
+                    var temp = nodes[iShell2]
             
                     while (j >= iShell && nodes[j-iShell].y > temp.y) {
-                        nodes[j] = nodes[j-iShell];
-                        j = j - iShell;
+                        nodes[j] = nodes[j-iShell]
+                        j = j - iShell
                         comparations.text("Comp: " + (++actComp))
+                        drawNodes()
                     }
 
                     nodes[j] = temp;
-                }
-            
-                if (iShell == 2) {
-                    iShell = 1;
+                    iShell2++;
                 } else {
-                    iShell = parseInt(iShell*5 / 11);
+                    if (iShell == 2) {
+                        iShell = 1
+                    } else {
+                        iShell = parseInt(iShell*5 / 11)
+                    }
+                    iShell2 = iShell
                 }
             } else {
-                iShell = 1
+                iShell = 0
+                iShell = 0
                 sorting = null
                 actComp = 0
             }
         }
     }
+}
+
+function merge_sort(left_part,right_part) 
+{
+	var i = 0;
+	var j = 0;
+	var results = [];
+
+	while (i < left_part.length || j < right_part.length) {
+		if (i === left_part.length) {
+			// j is the only index left_part
+			results.push(right_part[j]);
+			j++;
+		} 
+      else if (j === right_part.length || left_part[i] <= right_part[j]) {
+			results.push(left_part[i]);
+			i++;
+		} else {
+			results.push(right_part[j]);
+			j++;
+		}
+	}
+	return results;
 }
 
 function createNode(X, Y) {
@@ -141,6 +168,8 @@ function createNode(X, Y) {
 }
 
 function drawNodes() {
+    clear();
+    background(70, 66, 74);
     let X = 500;
     nodes.forEach(node => {
         fill(node.color);
