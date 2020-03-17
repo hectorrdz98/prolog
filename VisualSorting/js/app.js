@@ -54,12 +54,17 @@ var swapped = true;
 var iInsert = 1;
 var iShell = 0;
 var iShell2 = 0;
+var mergeStart = false;
+var quickStart = false;
+var heapStart = false;
+
+var resultsExtra = [];
 
 let comparations = $("#compartions h3");
 var actComp = 0;
 
 function draw() {
-    frameRate(10);
+    frameRate(60);
     drawNodes();
     if (sorting) {
         if (sorting == 'bubble') {
@@ -130,31 +135,138 @@ function draw() {
                 sorting = null
                 actComp = 0
             }
+        } else if (sorting == 'merge') {
+            if (!mergeStart) {
+                nodes = mergeSort(nodes)
+                mergeStart = true
+            } else {
+                sorting = null
+                actComp = 0
+                mergeStart = false
+            }
+        } else if (sorting == 'quick') {
+            if (!quickStart) {
+                nodes = quickSort(nodes, 0, nodes.length-1)
+                quickStart = true
+            } else {
+                sorting = null
+                actComp = 0
+                quickStart = false
+            }
+        } else if (sorting == 'heap') {
+            if (!heapStart) {
+                heapSort(nodes)
+                heapStart = true
+            } else {
+                sorting = null
+                actComp = 0
+                heapStart = false
+            }
         }
     }
 }
 
-function merge_sort(left_part,right_part) 
-{
-	var i = 0;
-	var j = 0;
-	var results = [];
+const mergeSort = (list) =>{
+    if(list.length <= 1) return list;
+    const middle = list.length / 2 ;
+    const left = list.slice(0, middle);
+    const right = list.slice(middle, list.length);
+    return merge(mergeSort(left), mergeSort(right));
+}
 
-	while (i < left_part.length || j < right_part.length) {
-		if (i === left_part.length) {
-			// j is the only index left_part
-			results.push(right_part[j]);
-			j++;
-		} 
-      else if (j === right_part.length || left_part[i] <= right_part[j]) {
-			results.push(left_part[i]);
-			i++;
-		} else {
-			results.push(right_part[j]);
-			j++;
-		}
-	}
-	return results;
+const merge = (left, right) => {
+    var result = []
+    while(left.length || right.length) {
+        if(left.length && right.length) {
+            if(left[0].y < right[0].y) {
+                result.push(left.shift())
+            } else {
+                result.push(right.shift())
+            }
+        } else if(left.length) {
+            result.push(left.shift())
+        } else {
+            result.push(right.shift())
+        }
+        comparations.text("Comp: " + (++actComp))
+      }
+    return result
+}
+
+function quickSort(arr, left, right){
+    var len = arr.length, 
+    pivot,
+    partitionIndex;
+ 
+    if(left < right){
+        pivot = right;
+        partitionIndex = partition(arr, pivot, left, right);
+    
+        quickSort(arr, left, partitionIndex - 1);
+        quickSort(arr, partitionIndex + 1, right);
+    }
+
+    return arr;
+ }
+ 
+ function partition(arr, pivot, left, right){
+    var pivotValue = arr[pivot],
+        partitionIndex = left;
+ 
+    for(var i = left; i < right; i++){
+        if(arr[i].y < pivotValue.y){
+            swap(arr, i, partitionIndex);
+            partitionIndex++;
+        }
+    }
+   swap(arr, right, partitionIndex);
+   return partitionIndex;
+ }
+
+ function swap(arr, i, j){
+    var temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+    comparations.text("Comp: " + (++actComp))
+ }
+
+ function max_heapify(a, i, length) {
+    while (true) {
+        var left = i*2 + 1;
+        var right = i*2 + 2;
+        var largest = i;
+
+        if (left < length && a[left].y > a[largest].y) {
+            largest = left;
+        }
+
+        if (right < length && a[right].y > a[largest].y) {
+            largest = right;
+        }
+
+        if (i == largest) {
+            break;
+        }
+
+        swap(a, i, largest);
+        i = largest;
+    }
+}
+
+function heapify(a, length) {
+    for (var i = Math.floor(length/2 - 1); i >= 0; i--) {
+        max_heapify(a, i, length);
+    }
+}
+
+function heapSort(a) {
+    heapify(a, a.length);
+
+    for (var i = a.length - 1; i > 0; i--) {
+        swap(a, i, 0);
+
+        max_heapify(a, 0, i);
+    }
 }
 
 function createNode(X, Y) {
@@ -172,6 +284,12 @@ function drawNodes() {
     background(70, 66, 74);
     let X = 500;
     nodes.forEach(node => {
+        fill(node.color);
+        stroke(255);
+        circle(X, node.y, 15);
+        X += 10;
+    });
+    resultsExtra.forEach(node => {
         fill(node.color);
         stroke(255);
         circle(X, node.y, 15);
