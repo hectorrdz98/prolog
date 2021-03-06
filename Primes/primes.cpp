@@ -16,8 +16,8 @@ int is_prime(int n) {
 }
 
 int main() {
-    int n1 = 10000000;
-    int n2 = 20000000;
+    int n1 = 1;
+    int n2 = 2000000000;
     int total = 0;
     clock_t tStart = clock();
     for (int i = n1; i <= n2; i++)
